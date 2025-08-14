@@ -1,4 +1,0 @@
-Lemon|5|10
-Apple|20|2
-Water Melon|100|5
-pple|30|10
