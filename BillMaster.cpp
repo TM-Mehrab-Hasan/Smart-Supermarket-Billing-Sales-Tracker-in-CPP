@@ -38,6 +38,15 @@ const double VAT_RATE = 0.05;       // 5% VAT
 const double DISCOUNT_THRESHOLD = 500.0;
 const double DISCOUNT_AMOUNT = 50.0;
 
+// Function declarations (forward declarations)
+void display_inventory();
+void search_inventory();
+void delete_item_flow();
+void generate_daily_report();
+void view_sales_history();
+void add_item_flow();
+void print_bill_flow();
+
 // Cross-platform console color support
 void setColor(int color) {
     #ifdef _WIN32
@@ -218,7 +227,7 @@ void check_low_stock(const vector<ItemRec>& inv) {
     
     if(!low_stock_items.empty()) {
         setColor(4);
-        cout << "\n⚠️  LOW STOCK ALERT! ⚠️\n";
+        cout << "\n⚠️ LOW STOCK ALERT! ⚠️\n";
         setColor(14);
         cout << "The following items are running low:\n";
         setColor(7);
@@ -244,6 +253,123 @@ void ensure_directories() {
         cout << "Error creating directories: " << e.what() << "\n";
         setColor(7);
     }
+}
+
+// ----------------- Display / Search Inventory -----------------
+void display_inventory() { 
+    auto inv = load_inventory();
+    if(inv.empty()) { 
+        setColor(4); 
+        cout << "Inventory is empty!\n"; 
+        setColor(7); 
+        sleepMs(2000); 
+        return; 
+    }
+    
+    clearScreen(); 
+    setColor(11);
+    cout << "\n\t=== CURRENT INVENTORY ===\n\n";
+    cout << "+------------------+----------+-------+--------+\n";
+    cout << "| Item             | Rate     | Qty   | Status |\n";
+    cout << "+------------------+----------+-------+--------+\n"; 
+    setColor(7);
+    
+    for(const auto &it : inv) {
+        cout << "| " << left << setw(16) << it.name.substr(0, 16)
+             << " | " << right << setw(8) << fixed << setprecision(2) << it.rate
+             << " | " << setw(5) << it.qty << " | ";
+        
+        if(it.qty == 0) {
+            setColor(4); cout << " OUT   ";
+        } else if(it.qty <= LOW_STOCK_THRESHOLD) {
+            setColor(14); cout << " LOW   ";
+        } else {
+            setColor(10); cout << " OK    ";
+        }
+        setColor(7);
+        cout << " |\n";
+    }
+    
+    setColor(11); 
+    cout << "+------------------+----------+-------+--------+\n"; 
+    cout << "\nTotal Items: " << inv.size() << "\n";
+    setColor(7); 
+    pauseSystem();
+}
+
+void search_inventory() { 
+    auto inv = load_inventory();
+    if(inv.empty()) { 
+        setColor(4); 
+        cout << "Inventory is empty!\n"; 
+        setColor(7); 
+        sleepMs(2000); 
+        return; 
+    }
+    
+    setColor(14); 
+    cout << "Enter search term: "; 
+    setColor(7); 
+    string term; 
+    getline(cin, term);
+    
+    if(term.empty()) {
+        setColor(4);
+        cout << "Search term cannot be empty!\n";
+        setColor(7);
+        sleepMs(1500);
+        return;
+    }
+    
+    // Convert search term to lowercase for case-insensitive search
+    transform(term.begin(), term.end(), term.begin(), ::tolower);
+    
+    vector<ItemRec> results; 
+    for(const auto &it : inv) {
+        string item_name = it.name;
+        transform(item_name.begin(), item_name.end(), item_name.begin(), ::tolower);
+        if(item_name.find(term) != string::npos) {
+            results.push_back(it);
+        }
+    }
+    
+    if(results.empty()) { 
+        setColor(4); 
+        cout << "No items found matching '" << term << "'\n"; 
+        setColor(7); 
+        sleepMs(2000); 
+        return; 
+    }
+    
+    clearScreen(); 
+    setColor(11); 
+    cout << "\n\t=== SEARCH RESULTS for '" << term << "' ===\n\n";
+    cout << "+------------------+----------+-------+--------+\n";
+    cout << "| Item             | Rate     | Qty   | Status |\n";
+    cout << "+------------------+----------+-------+--------+\n"; 
+    setColor(7);
+    
+    for(const auto &it : results) {
+        cout << "| " << left << setw(16) << it.name.substr(0, 16)
+             << " | " << right << setw(8) << fixed << setprecision(2) << it.rate
+             << " | " << setw(5) << it.qty << " | ";
+        
+        if(it.qty == 0) {
+            setColor(4); cout << " OUT   ";
+        } else if(it.qty <= LOW_STOCK_THRESHOLD) {
+            setColor(14); cout << " LOW   ";
+        } else {
+            setColor(10); cout << " OK    ";
+        }
+        setColor(7);
+        cout << " |\n";
+    }
+    
+    setColor(11); 
+    cout << "+------------------+----------+-------+--------+\n"; 
+    cout << "\nFound " << results.size() << " matching items.\n";
+    setColor(7); 
+    pauseSystem();
 }
 
 // ----------------- Add / Update Item -----------------
@@ -568,123 +694,6 @@ void print_bill_flow() {
     sleepMs(3000);
 }
 
-// ----------------- Display / Search Inventory -----------------
-void display_inventory() { 
-    auto inv = load_inventory();
-    if(inv.empty()) { 
-        setColor(4); 
-        cout << "Inventory is empty!\n"; 
-        setColor(7); 
-        sleepMs(2000); 
-        return; 
-    }
-    
-    clearScreen(); 
-    setColor(11);
-    cout << "\n\t=== CURRENT INVENTORY ===\n\n";
-    cout << "+------------------+----------+-------+--------+\n";
-    cout << "| Item             | Rate     | Qty   | Status |\n";
-    cout << "+------------------+----------+-------+--------+\n"; 
-    setColor(7);
-    
-    for(const auto &it : inv) {
-        cout << "| " << left << setw(16) << it.name.substr(0, 16)
-             << " | " << right << setw(8) << fixed << setprecision(2) << it.rate
-             << " | " << setw(5) << it.qty << " | ";
-        
-        if(it.qty == 0) {
-            setColor(4); cout << " OUT   ";
-        } else if(it.qty <= LOW_STOCK_THRESHOLD) {
-            setColor(14); cout << " LOW   ";
-        } else {
-            setColor(10); cout << " OK    ";
-        }
-        setColor(7);
-        cout << " |\n";
-    }
-    
-    setColor(11); 
-    cout << "+------------------+----------+-------+--------+\n"; 
-    cout << "\nTotal Items: " << inv.size() << "\n";
-    setColor(7); 
-    pauseSystem();
-}
-
-void search_inventory() { 
-    auto inv = load_inventory();
-    if(inv.empty()) { 
-        setColor(4); 
-        cout << "Inventory is empty!\n"; 
-        setColor(7); 
-        sleepMs(2000); 
-        return; 
-    }
-    
-    setColor(14); 
-    cout << "Enter search term: "; 
-    setColor(7); 
-    string term; 
-    getline(cin, term);
-    
-    if(term.empty()) {
-        setColor(4);
-        cout << "Search term cannot be empty!\n";
-        setColor(7);
-        sleepMs(1500);
-        return;
-    }
-    
-    // Convert search term to lowercase for case-insensitive search
-    transform(term.begin(), term.end(), term.begin(), ::tolower);
-    
-    vector<ItemRec> results; 
-    for(const auto &it : inv) {
-        string item_name = it.name;
-        transform(item_name.begin(), item_name.end(), item_name.begin(), ::tolower);
-        if(item_name.find(term) != string::npos) {
-            results.push_back(it);
-        }
-    }
-    
-    if(results.empty()) { 
-        setColor(4); 
-        cout << "No items found matching '" << term << "'\n"; 
-        setColor(7); 
-        sleepMs(2000); 
-        return; 
-    }
-    
-    clearScreen(); 
-    setColor(11); 
-    cout << "\n\t=== SEARCH RESULTS for '" << term << "' ===\n\n";
-    cout << "+------------------+----------+-------+--------+\n";
-    cout << "| Item             | Rate     | Qty   | Status |\n";
-    cout << "+------------------+----------+-------+--------+\n"; 
-    setColor(7);
-    
-    for(const auto &it : results) {
-        cout << "| " << left << setw(16) << it.name.substr(0, 16)
-             << " | " << right << setw(8) << fixed << setprecision(2) << it.rate
-             << " | " << setw(5) << it.qty << " | ";
-        
-        if(it.qty == 0) {
-            setColor(4); cout << " OUT   ";
-        } else if(it.qty <= LOW_STOCK_THRESHOLD) {
-            setColor(14); cout << " LOW   ";
-        } else {
-            setColor(10); cout << " OK    ";
-        }
-        setColor(7);
-        cout << " |\n";
-    }
-    
-    setColor(11); 
-    cout << "+------------------+----------+-------+--------+\n"; 
-    cout << "\nFound " << results.size() << " matching items.\n";
-    setColor(7); 
-    pauseSystem();
-}
-
 // ----------------- Enhanced Daily Report -----------------
 void generate_daily_report() {
     ensure_directories();
@@ -998,6 +1007,12 @@ void view_sales_history() {
 
 // ----------------- Enhanced Main Menu -----------------
 int main() {
+    #ifdef _WIN32
+        // Set console to UTF-8 encoding
+        SetConsoleOutputCP(CP_UTF8);
+        SetConsoleCP(CP_UTF8);
+    #endif
+    
     ensure_directories();
     
     bool exit = false;
@@ -1010,21 +1025,21 @@ int main() {
         
         setColor(9); 
         cout << "\n";
-        cout << "\t██████╗  ██████╗ ███████╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗\n";
-        cout << "\t██╔══██╗██╔═══██╗██╔════╝    ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║\n";
-        cout << "\t██████╔╝██║   ██║███████╗    ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║\n";
-        cout << "\t██╔═══╝ ██║   ██║╚════██║    ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║\n";
-        cout << "\t██║     ╚██████╔╝███████║    ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║\n";
-        cout << "\t╚═╝      ╚═════╝ ╚══════╝    ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝\n";
+        cout << "\t██████╗ ██╗██╗     ██╗      ███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗  \n";
+        cout << "\t██╔══██╗██║██║     ██║      ████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗ \n";
+        cout << "\t██████╔╝██║██║     ██║█████╗██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝ \n";
+        cout << "\t██╔══██╗██║██║     ██║╚════╝██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗ \n";
+        cout << "\t██████╔╝██║███████╗███████  ██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║ \n";
+        cout << "\t╚═════╝ ╚═╝╚══════╝╚══════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝ \n";
         setColor(7);
         
         cout << "\n\t\t\t    Supermarket POS & Billing System v2.0\n";
         cout << "\t\t\t    =====================================\n\n";
         
         setColor(11);
-        cout << "\t┌─────────────────────────────────────────────────────────────┐\n";
+        cout << "\t┌────────────────────────────────────────────────────────────┐\n";
         cout << "\t│                        MAIN MENU                            │\n";
-        cout << "\t├─────────────────────────────────────────────────────────────┤\n";
+        cout << "\t├────────────────────────────────────────────────────────────┤\n";
         cout << "\t│  1. 📦 Inventory Management (Add/Update Items)             │\n";
         cout << "\t│  2. 💰 Create Bill / Process Sale                          │\n";
         cout << "\t│  3. 📋 Display Full Inventory                              │\n";
@@ -1033,7 +1048,7 @@ int main() {
         cout << "\t│  6. 📊 Generate Daily Report                               │\n";
         cout << "\t│  7. 📈 View Sales History                                  │\n";
         cout << "\t│  8. ❌ Exit System                                         │\n";
-        cout << "\t└─────────────────────────────────────────────────────────────┘\n";
+        cout << "\t└────────────────────────────────────────────────────────────┘\n";
         setColor(7);
         
         cout << "\n\tEnter your choice (1-8): ";
