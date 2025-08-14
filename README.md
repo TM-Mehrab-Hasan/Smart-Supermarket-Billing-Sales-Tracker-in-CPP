@@ -56,7 +56,6 @@ BillMaster++/
 │
 ├── 🔧 Compiled Files
 │   ├── BillMaster.exe              # Windows executable (after compilation)
-│   └── BillMaster                  # Linux/Mac executable (after compilation)
 │
 ├── 💾 Data Files (Created automatically)
 │   ├── Bill.txt                    # Inventory database
@@ -70,13 +69,8 @@ BillMaster++/
 │   │   └── ...
 │   │
 │   ├── Reports/                    # Daily sales reports
-│   │   ├── DailyReport_2024-08-14.txt
-│   │   ├── DailyReport_2024-08-15.txt
-│   │   └── ...
-│   │
-│   └── Backup/                     # Backup files (optional)
-│       ├── Bill_backup_2024-08-14.txt
-│       ├── Sales_backup_2024-08-14.txt
+│       ├── DailyReport_2024-08-14.txt
+│       ├── DailyReport_2024-08-15.txt
 │       └── ...
 │
 └── 📋 Optional Files
