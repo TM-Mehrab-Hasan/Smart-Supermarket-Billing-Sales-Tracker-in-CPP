@@ -38,6 +38,28 @@ It supports inventory management, customer billing, receipts, low-stock alerts, 
 
 ---
 
+## 📸 System Screenshots  
+
+### 1. Main Menu  
+![Main Menu](System%20Visuals/Main_Menu.png)  
+
+### 2. Inventory Management 
+![Inventory Management](System%20Visuals/Inventory_Management.png)  
+
+### 3. Inventory 
+![Inventory](System%20Visuals/Inventory.png)
+
+### 4. Search Item in Inventory [Not Case Sensitive]
+![Search Inventory](System%20Visuals/Search_Item.png)  
+
+### 5. Daily Report
+![Daily Report](System%20Visuals/Daily_Report.png)  
+
+### 6. Sales History
+![Sales History](System%20Visuals/Sales_History.png)  
+
+---
+
 ## How to  run?
 
 1. Clone the repository
