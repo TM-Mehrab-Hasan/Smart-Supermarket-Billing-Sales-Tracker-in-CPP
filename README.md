@@ -38,6 +38,13 @@ It supports inventory management, customer billing, receipts, low-stock alerts, 
 
 ---
 
+## How to  run?
+
+1. Clone the repository
+2. Run the BillMaster.exe file and enjoy!
+
+---
+
 ## 🏗️ **Project Root Directory**
 ```
 BillMaster++/
