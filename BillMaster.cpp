@@ -1038,13 +1038,13 @@ int main() {
         
         setColor(11);
         cout << "\t┌────────────────────────────────────────────────────────────┐\n";
-        cout << "\t│                        MAIN MENU                            │\n";
+        cout << "\t│                        MAIN MENU                           │\n";
         cout << "\t├────────────────────────────────────────────────────────────┤\n";
         cout << "\t│  1. 📦 Inventory Management (Add/Update Items)             │\n";
         cout << "\t│  2. 💰 Create Bill / Process Sale                          │\n";
         cout << "\t│  3. 📋 Display Full Inventory                              │\n";
         cout << "\t│  4. 🔍 Search Inventory                                    │\n";
-        cout << "\t│  5. 🗑️  Delete Item from Inventory                        │\n";
+        cout << "\t│  5. 🗑️ Delete Item from Inventory                          │\n";
         cout << "\t│  6. 📊 Generate Daily Report                               │\n";
         cout << "\t│  7. 📈 View Sales History                                  │\n";
         cout << "\t│  8. ❌ Exit System                                         │\n";
