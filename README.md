@@ -1,4 +1,4 @@
-# BillMaster++ 🛒
+# Bill Master++ 🛒
 
 **BillMaster++** is a full-featured offline **Supermarket POS and Billing System** built in C++.  
 It supports inventory management, customer billing, receipts, low-stock alerts, and daily sales reports with visual charts — all designed for Windows offline use.
