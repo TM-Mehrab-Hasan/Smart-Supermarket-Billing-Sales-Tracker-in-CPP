@@ -109,7 +109,7 @@ BillMaster++/
 | File | Description | Required |
 |------|-------------|----------|
 | `BillMaster.cpp` | Main C++ source code with all POS functionality | ✅ Yes |
-| `setup_demo.bat` | Automated setup script for Windows | 🔧 Recommended |
+| `build_and_run.bat` | Automated setup script for Windows | 🔧 Recommended |
 
 ### **Data Files (Auto-generated)**
 | File | Description | Format | Sample Content |
@@ -123,7 +123,6 @@ BillMaster++/
 |-----------|---------|----------|
 | `Receipts/` | Customer receipts | Individual `.txt` receipt files |
 | `Reports/` | Business reports | Daily sales analysis files |
-| `Backup/` | Data backups | Backup copies of data files |
 
 ---
 
@@ -262,7 +261,6 @@ Bill.txt
 # Generated folders
 Receipts/
 Reports/
-Backup/
 
 # IDE files
 *.cbp
