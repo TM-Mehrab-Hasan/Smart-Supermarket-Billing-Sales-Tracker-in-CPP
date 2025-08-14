@@ -38,50 +38,6 @@ It supports inventory management, customer billing, receipts, low-stock alerts, 
 
 ---
 
-## Folder Structure
-
-```text
-BillMaster++/
-│
-├── 📄 Source Code Files
-│   ├── BillMaster.cpp              # Main C++ source code (your enhanced version)
-│   ├── setup_demo.bat              # Windows setup script
-│   └── README.md                   # Project documentation
-│
-├── 🔧 Compiled Files
-│   ├── BillMaster.exe              # Windows executable (after compilation)
-│   └── BillMaster                  # Linux/Mac executable (after compilation)
-│
-├── 💾 Data Files (Created automatically)
-│   ├── Bill.txt                    # Inventory database
-│   ├── Sales.txt                   # Sales transaction log
-│   └── README.txt                  # Auto-generated user guide
-│
-├── 📂 Generated Folders (Created by program/script)
-│   ├── Receipts/                   # Individual customer receipts
-│   │   ├── Receipt_2024-08-14_10-30-15_John_Doe.txt
-│   │   ├── Receipt_2024-08-14_11-45-22_Walk-in_Customer.txt
-│   │   └── ...
-│   │
-│   ├── Reports/                    # Daily sales reports
-│   │   ├── DailyReport_2024-08-14.txt
-│   │   ├── DailyReport_2024-08-15.txt
-│   │   └── ...
-│   │
-│   └── Backup/                     # Backup files (optional)
-│       ├── Bill_backup_2024-08-14.txt
-│       ├── Sales_backup_2024-08-14.txt
-│       └── ...
-│
-└── 📋 Optional Files
-    ├── .gitignore                  # Git ignore file
-    ├── LICENSE.txt                 # License file
-    └── CHANGELOG.md                # Version history
-
-```
-
-# 📁 BillMaster++ POS System - Complete File Structure
-
 ## 🏗️ **Project Root Directory**
 ```
 BillMaster++/
