@@ -9,22 +9,22 @@
 #include <algorithm>
 #include <limits>
 
+// Remove filesystem dependencies for better portability
 #ifdef _WIN32
     #include <windows.h>
-    #include <filesystem>
-    namespace fs = std::filesystem;
+    #include <direct.h>
+    #define MKDIR(dir) _mkdir(dir)
 #else
-    #include <experimental/filesystem>
-    namespace fs = std::experimental::filesystem;
     #include <unistd.h>
     #include <sys/stat.h>
+    #define MKDIR(dir) mkdir(dir, 0755)
 #endif
 
 using namespace std;
 
 struct ItemRec { 
     string name; 
-    double rate = 0.0;  // Changed to double for better precision
+    double rate = 0.0;
     int qty = 0; 
 };
 
@@ -33,12 +33,12 @@ const string INVENTORY_FILE = "Bill.txt";
 const string SALES_FILE = "Sales.txt";
 const string RECEIPT_FOLDER = "Receipts";
 const string REPORT_FOLDER = "Reports";
-const int LOW_STOCK_THRESHOLD = 5;  // Configurable low stock threshold
-const double VAT_RATE = 0.05;       // 5% VAT
+const int LOW_STOCK_THRESHOLD = 5;
+const double VAT_RATE = 0.05;
 const double DISCOUNT_THRESHOLD = 500.0;
 const double DISCOUNT_AMOUNT = 50.0;
 
-// Function declarations (forward declarations)
+// Function declarations
 void display_inventory();
 void search_inventory();
 void delete_item_flow();
@@ -46,13 +46,13 @@ void generate_daily_report();
 void view_sales_history();
 void add_item_flow();
 void print_bill_flow();
+void improved_update_item_flow(); // New improved update function
 
 // Cross-platform console color support
 void setColor(int color) {
     #ifdef _WIN32
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
     #else
-        // Basic color support for Unix-like systems
         switch(color) {
             case 4: cout << "\033[31m"; break;  // Red
             case 7: cout << "\033[37m"; break;  // White
@@ -96,16 +96,21 @@ void wait_and_flush() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
 }
 
+// Simple directory creation function (more portable)
+void ensure_directories() {
+    MKDIR(RECEIPT_FOLDER.c_str());
+    MKDIR(REPORT_FOLDER.c_str());
+}
+
 // Enhanced parsing with better error handling
 bool parse_line(const string& line, ItemRec& out) {
-    if(line.empty() || line[0] == '#') return false; // Skip empty lines and comments
+    if(line.empty() || line[0] == '#') return false;
     
     size_t p1 = line.find('|');
     size_t p2 = line.find('|', p1 + 1);
     if(p1 == string::npos || p2 == string::npos) return false;
     
     out.name = line.substr(0, p1);
-    // Trim whitespace from name
     out.name.erase(0, out.name.find_first_not_of(" \t"));
     out.name.erase(out.name.find_last_not_of(" \t") + 1);
     
@@ -127,7 +132,6 @@ vector<ItemRec> load_inventory() {
     vector<ItemRec> inv; 
     ifstream in(INVENTORY_FILE);
     if(!in.is_open()) {
-        // Create empty inventory file if it doesn't exist
         ofstream out(INVENTORY_FILE);
         out.close();
         return inv;
@@ -227,7 +231,7 @@ void check_low_stock(const vector<ItemRec>& inv) {
     
     if(!low_stock_items.empty()) {
         setColor(4);
-        cout << "\n⚠️ LOW STOCK ALERT! ⚠️\n";
+        cout << "\n*** LOW STOCK ALERT! ***\n";
         setColor(14);
         cout << "The following items are running low:\n";
         setColor(7);
@@ -236,22 +240,6 @@ void check_low_stock(const vector<ItemRec>& inv) {
         }
         cout << "\n";
         sleepMs(3000);
-    }
-}
-
-// Create necessary directories
-void ensure_directories() {
-    try {
-        if(!fs::exists(RECEIPT_FOLDER)) {
-            fs::create_directory(RECEIPT_FOLDER);
-        }
-        if(!fs::exists(REPORT_FOLDER)) {
-            fs::create_directory(REPORT_FOLDER);
-        }
-    } catch(const exception& e) {
-        setColor(4);
-        cout << "Error creating directories: " << e.what() << "\n";
-        setColor(7);
     }
 }
 
@@ -269,13 +257,15 @@ void display_inventory() {
     clearScreen(); 
     setColor(11);
     cout << "\n\t=== CURRENT INVENTORY ===\n\n";
-    cout << "+------------------+----------+-------+--------+\n";
-    cout << "| Item             | Rate     | Qty   | Status |\n";
-    cout << "+------------------+----------+-------+--------+\n"; 
+    cout << "+----+------------------+----------+-------+--------+\n";
+    cout << "| No | Item             | Rate     | Qty   | Status |\n";
+    cout << "+----+------------------+----------+-------+--------+\n"; 
     setColor(7);
     
-    for(const auto &it : inv) {
-        cout << "| " << left << setw(16) << it.name.substr(0, 16)
+    for(size_t i = 0; i < inv.size(); i++) {
+        const auto &it = inv[i];
+        cout << "| " << right << setw(2) << (i+1)
+             << " | " << left << setw(16) << it.name.substr(0, 16)
              << " | " << right << setw(8) << fixed << setprecision(2) << it.rate
              << " | " << setw(5) << it.qty << " | ";
         
@@ -291,7 +281,7 @@ void display_inventory() {
     }
     
     setColor(11); 
-    cout << "+------------------+----------+-------+--------+\n"; 
+    cout << "+----+------------------+----------+-------+--------+\n"; 
     cout << "\nTotal Items: " << inv.size() << "\n";
     setColor(7); 
     pauseSystem();
@@ -321,7 +311,6 @@ void search_inventory() {
         return;
     }
     
-    // Convert search term to lowercase for case-insensitive search
     transform(term.begin(), term.end(), term.begin(), ::tolower);
     
     vector<ItemRec> results; 
@@ -372,6 +361,200 @@ void search_inventory() {
     pauseSystem();
 }
 
+// ----------------- IMPROVED UPDATE ITEM FLOW -----------------
+void improved_update_item_flow() {
+    auto inv = load_inventory();
+    if(inv.empty()) { 
+        setColor(4); 
+        cout << "Inventory is empty! Please add items first.\n"; 
+        setColor(7); 
+        sleepMs(2000); 
+        return; 
+    }
+    
+    bool close = false;
+    while(!close) {
+        clearScreen(); 
+        setColor(11);
+        cout << "\n\t=== UPDATE INVENTORY ITEM ===\n\n";
+        
+        // Display all items with numbers
+        cout << "+----+------------------+----------+-------+--------+\n";
+        cout << "| No | Item             | Rate     | Qty   | Status |\n";
+        cout << "+----+------------------+----------+-------+--------+\n"; 
+        setColor(7);
+        
+        for(size_t i = 0; i < inv.size(); i++) {
+            const auto &it = inv[i];
+            cout << "| " << right << setw(2) << (i+1)
+                 << " | " << left << setw(16) << it.name.substr(0, 16)
+                 << " | " << right << setw(8) << fixed << setprecision(2) << it.rate
+                 << " | " << setw(5) << it.qty << " | ";
+            
+            if(it.qty == 0) {
+                setColor(4); cout << " OUT   ";
+            } else if(it.qty <= LOW_STOCK_THRESHOLD) {
+                setColor(14); cout << " LOW   ";
+            } else {
+                setColor(10); cout << " OK    ";
+            }
+            setColor(7);
+            cout << " |\n";
+        }
+        
+        setColor(11); 
+        cout << "+----+------------------+----------+-------+--------+\n\n"; 
+        setColor(14);
+        cout << "Enter item number to update (1-" << inv.size() << ") or 0 to go back: ";
+        setColor(7);
+        
+        int choice;
+        if(!(cin >> choice)) {
+            wait_and_flush();
+            setColor(4);
+            cout << "Invalid input! Please enter a number.\n";
+            setColor(7);
+            sleepMs(1500);
+            continue;
+        }
+        wait_and_flush();
+        
+        if(choice == 0) {
+            close = true;
+            continue;
+        }
+        
+        if(choice < 1 || choice > static_cast<int>(inv.size())) {
+            setColor(4);
+            cout << "Invalid item number! Please select between 1-" << inv.size() << ".\n";
+            setColor(7);
+            sleepMs(1500);
+            continue;
+        }
+        
+        // Update selected item
+        int idx = choice - 1;
+        ItemRec& item = inv[idx];
+        
+        clearScreen();
+        setColor(11);
+        cout << "\n\t=== UPDATING ITEM: " << item.name << " ===\n\n";
+        setColor(14);
+        cout << "Current Details:\n";
+        setColor(7);
+        cout << "Name: " << item.name << "\n";
+        cout << "Rate: " << fixed << setprecision(2) << item.rate << " BDT\n";
+        cout << "Quantity: " << item.qty << "\n\n";
+        
+        setColor(11);
+        cout << "Choose what to update:\n";
+        cout << "1. Update Rate only\n";
+        cout << "2. Update Quantity only\n";
+        cout << "3. Update both Rate and Quantity\n";
+        cout << "4. Back to item selection\n";
+        cout << "Enter choice: ";
+        setColor(7);
+        
+        int update_choice;
+        if(!(cin >> update_choice)) {
+            wait_and_flush();
+            continue;
+        }
+        wait_and_flush();
+        
+        bool updated = false;
+        
+        switch(update_choice) {
+            case 1: {
+                setColor(14);
+                cout << "Enter new rate (current: " << item.rate << "): ";
+                setColor(7);
+                double new_rate;
+                if(cin >> new_rate && new_rate > 0) {
+                    item.rate = new_rate;
+                    updated = true;
+                } else {
+                    setColor(4);
+                    cout << "Invalid rate!\n";
+                    setColor(7);
+                }
+                wait_and_flush();
+                break;
+            }
+            case 2: {
+                setColor(14);
+                cout << "Enter new quantity (current: " << item.qty << "): ";
+                setColor(7);
+                int new_qty;
+                if(cin >> new_qty && new_qty >= 0) {
+                    item.qty = new_qty;
+                    updated = true;
+                } else {
+                    setColor(4);
+                    cout << "Invalid quantity!\n";
+                    setColor(7);
+                }
+                wait_and_flush();
+                break;
+            }
+            case 3: {
+                setColor(14);
+                cout << "Enter new rate (current: " << item.rate << "): ";
+                setColor(7);
+                double new_rate;
+                if(!(cin >> new_rate) || new_rate <= 0) {
+                    setColor(4);
+                    cout << "Invalid rate!\n";
+                    setColor(7);
+                    wait_and_flush();
+                    break;
+                }
+                
+                setColor(14);
+                cout << "Enter new quantity (current: " << item.qty << "): ";
+                setColor(7);
+                int new_qty;
+                if(!(cin >> new_qty) || new_qty < 0) {
+                    setColor(4);
+                    cout << "Invalid quantity!\n";
+                    setColor(7);
+                    wait_and_flush();
+                    break;
+                }
+                
+                item.rate = new_rate;
+                item.qty = new_qty;
+                updated = true;
+                wait_and_flush();
+                break;
+            }
+            case 4:
+                continue;
+            default:
+                setColor(4);
+                cout << "Invalid choice!\n";
+                setColor(7);
+                sleepMs(1500);
+                continue;
+        }
+        
+        if(updated) {
+            if(save_inventory(inv)) {
+                setColor(10);
+                cout << "\n*** Item '" << item.name << "' updated successfully! ***\n";
+                cout << "New details: Rate=" << fixed << setprecision(2) << item.rate 
+                     << " BDT, Quantity=" << item.qty << "\n";
+                setColor(7);
+            } else {
+                setColor(4);
+                cout << "Error: Could not save changes!\n";
+                setColor(7);
+            }
+            sleepMs(3000);
+        }
+    }
+}
+
 // ----------------- Add / Update Item -----------------
 void add_item_flow() {
     bool close = false;
@@ -379,7 +562,7 @@ void add_item_flow() {
         clearScreen(); 
         setColor(11); 
         cout << "\n\t=== INVENTORY MANAGEMENT ===\n";
-        cout << "\t1. Add New Item\n\t2. Update Existing Item\n\t3. View Current Stock\n\t4. Back to Main Menu\n";
+        cout << "\t1. Add New Item\n\t2. Update Existing Item (Improved)\n\t3. View Current Stock\n\t4. Back to Main Menu\n";
         cout << "\tEnter Choice: "; 
         setColor(7);
         
@@ -390,7 +573,7 @@ void add_item_flow() {
         } 
         wait_and_flush();
         
-        if(choice == 1 || choice == 2) {
+        if(choice == 1) {
             string name; 
             double rate;
             int quant;
@@ -439,15 +622,9 @@ void add_item_flow() {
             if(idx >= 0) {
                 setColor(14);
                 cout << "Item exists! Current: Rate=" << inv[idx].rate << ", Qty=" << inv[idx].qty << "\n";
-                if(choice == 1) {
-                    cout << "Adding to existing quantity...\n";
-                    inv[idx].rate = rate; 
-                    inv[idx].qty += quant;
-                } else {
-                    cout << "Updating item...\n";
-                    inv[idx].rate = rate; 
-                    inv[idx].qty = quant;  // Replace quantity instead of adding
-                }
+                cout << "Adding to existing quantity...\n";
+                inv[idx].rate = rate; 
+                inv[idx].qty += quant;
                 setColor(7);
             } else {
                 inv.push_back({name, rate, quant});
@@ -459,11 +636,13 @@ void add_item_flow() {
                 setColor(7);
             } else {
                 setColor(10);
-                cout << "✓ Item successfully " << (idx >= 0 ? "updated" : "added") << "!\n";
+                cout << "*** Item successfully " << (idx >= 0 ? "updated" : "added") << "! ***\n";
                 setColor(7);
             }
             sleepMs(2000);
             
+        } else if(choice == 2) {
+            improved_update_item_flow(); // Call the new improved function
         } else if(choice == 3) {
             display_inventory();
         } else if(choice == 4) {
@@ -570,7 +749,7 @@ void print_bill_flow() {
             save_inventory(inv);
             
             setColor(10);
-            cout << "✓ Added " << q << " x " << name << " to bill (₹" << (inv[idx].rate * q) << ")\n";
+            cout << "*** Added " << q << " x " << name << " to bill (BDT " << (inv[idx].rate * q) << ") ***\n";
             setColor(7);
             sleepMs(1500);
             
@@ -653,7 +832,7 @@ void print_bill_flow() {
     replace(safe_customer.begin(), safe_customer.end(), '/', '_');
     
     strftime(buf, 30, "%Y-%m-%d_%H-%M-%S", now);
-    string filename = RECEIPT_FOLDER + "/Receipt_" + buf + "_" + safe_customer + ".txt";
+    string filename = RECEIPT_FOLDER + "/Receipt_" + string(buf) + "_" + safe_customer + ".txt";
     
     ofstream rec(filename); 
     rec << "                    SUPERMARKET RECEIPT\n";
@@ -684,8 +863,8 @@ void print_bill_flow() {
     rec.close();
 
     setColor(10); 
-    cout << "\n✓ Sale completed successfully!\n"; 
-    cout << "✓ Receipt saved to: " << filename << "\n";
+    cout << "\n*** Sale completed successfully! ***\n"; 
+    cout << "*** Receipt saved to: " << filename << " ***\n";
     setColor(7); 
     
     // Check for low stock after sale
@@ -793,7 +972,7 @@ void generate_daily_report() {
                 << setw(12) << p.second << " ";
             // Create simple bar chart
             int bars = min(30, p.second);  // Max 30 characters for chart
-            for(int i = 0; i < bars; i++) out << "█";
+            for(int i = 0; i < bars; i++) out << "#";
             out << "\n";
         }
         out << "\n";
@@ -868,8 +1047,8 @@ void generate_daily_report() {
 
     clearScreen();
     setColor(10);
-    cout << "\n✓ Daily report generated successfully!\n";
-    cout << "✓ Report saved to: " << report_file << "\n\n";
+    cout << "\n*** Daily report generated successfully! ***\n";
+    cout << "*** Report saved to: " << report_file << " ***\n\n";
     setColor(11);
     cout << "REPORT SUMMARY:\n";
     cout << string(40, '-') << "\n";
@@ -932,7 +1111,7 @@ void delete_item_flow() {
         inv.erase(inv.begin() + idx);
         if(save_inventory(inv)) {
             setColor(10);
-            cout << "✓ Item '" << name << "' deleted successfully!\n";
+            cout << "*** Item '" << name << "' deleted successfully! ***\n";
             setColor(7);
         } else {
             setColor(4);
@@ -1008,7 +1187,7 @@ void view_sales_history() {
 // ----------------- Enhanced Main Menu -----------------
 int main() {
     #ifdef _WIN32
-        // Set console to UTF-8 encoding
+        // Set console to UTF-8 encoding for better compatibility
         SetConsoleOutputCP(CP_UTF8);
         SetConsoleCP(CP_UTF8);
     #endif
@@ -1088,7 +1267,7 @@ int main() {
                 break;
             case 8: 
                 setColor(14);
-                cout << "\n\tThank you for using POS System! Goodbye! 👋\n";
+                cout << "\n\tThank you for using POS System! Goodbye!\n";
                 setColor(7);
                 sleepMs(2000);
                 exit = true; 

@@ -1,4 +1,4 @@
-# Bill Master++ 🛒
+# BillMaster++ 🛒
 
 **BillMaster++** is a full-featured offline **Supermarket POS and Billing System** built in C++.  
 It supports inventory management, customer billing, receipts, low-stock alerts, and daily sales reports with visual charts — all designed for Windows offline use.
@@ -38,35 +38,6 @@ It supports inventory management, customer billing, receipts, low-stock alerts, 
 
 ---
 
-## 📸 System Screenshots  
-
-### 1. Main Menu  
-![Main Menu](System%20Visuals/Main_Menu.png)  
-
-### 2. Inventory Management 
-![Inventory Management](System%20Visuals/Inventory_Management.png)  
-
-### 3. Inventory 
-![Inventory](System%20Visuals/Inventory.png)
-
-### 4. Search Item in Inventory [Not Case Sensitive]
-![Search Inventory](System%20Visuals/Search_Item.png)  
-
-### 5. Daily Report
-![Daily Report](System%20Visuals/Daily_Report.png)  
-
-### 6. Sales History
-![Sales History](System%20Visuals/Sales_History.png)  
-
----
-
-## How to  run?
-
-1. Clone the repository
-2. Run the BillMaster.exe file and enjoy!
-
----
-
 ## 🏗️ **Project Root Directory**
 ```
 BillMaster++/
@@ -78,6 +49,7 @@ BillMaster++/
 │
 ├── 🔧 Compiled Files
 │   ├── BillMaster.exe              # Windows executable (after compilation)
+│   └── BillMaster                  # Linux/Mac executable (after compilation)
 │
 ├── 💾 Data Files (Created automatically)
 │   ├── Bill.txt                    # Inventory database
@@ -91,8 +63,13 @@ BillMaster++/
 │   │   └── ...
 │   │
 │   ├── Reports/                    # Daily sales reports
-│       ├── DailyReport_2024-08-14.txt
-│       ├── DailyReport_2024-08-15.txt
+│   │   ├── DailyReport_2024-08-14.txt
+│   │   ├── DailyReport_2024-08-15.txt
+│   │   └── ...
+│   │
+│   └── Backup/                     # Backup files (optional)
+│       ├── Bill_backup_2024-08-14.txt
+│       ├── Sales_backup_2024-08-14.txt
 │       └── ...
 │
 └── 📋 Optional Files
@@ -109,7 +86,7 @@ BillMaster++/
 | File | Description | Required |
 |------|-------------|----------|
 | `BillMaster.cpp` | Main C++ source code with all POS functionality | ✅ Yes |
-| `build_and_run.bat` | Automated setup script for Windows | 🔧 Recommended |
+| `setup_demo.bat` | Automated setup script for Windows | 🔧 Recommended |
 
 ### **Data Files (Auto-generated)**
 | File | Description | Format | Sample Content |
@@ -123,6 +100,7 @@ BillMaster++/
 |-----------|---------|----------|
 | `Receipts/` | Customer receipts | Individual `.txt` receipt files |
 | `Reports/` | Business reports | Daily sales analysis files |
+| `Backup/` | Data backups | Backup copies of data files |
 
 ---
 
@@ -261,6 +239,7 @@ Bill.txt
 # Generated folders
 Receipts/
 Reports/
+Backup/
 
 # IDE files
 *.cbp

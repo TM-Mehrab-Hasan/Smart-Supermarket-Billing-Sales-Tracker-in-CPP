@@ -1,27 +1,31 @@
 ======================================================================
              SUPERMARKET DAILY SALES REPORT
-                    Date: 2025-08-14
+                    Date: 2025-08-15
 ======================================================================
 
 SALES SUMMARY:
 ------------------------------
-Total Transactions: 3
-Total Revenue: 425.25 BDT
-Average Transaction: 141.75 BDT
+Total Transactions: 5
+Total Revenue: 116011.75 BDT
+Average Transaction: 23202.35 BDT
 
 TOP SELLING ITEMS:
 --------------------------------------------------
 Item                     Qty Sold    Visual Chart
 --------------------------------------------------
-Apple                    9            █████████
-Orange                   5            █████
-Mango                    2            ██
+Apple                    11           ###########
+Orange                   7            #######
+Lemon                    4            ####
+Mango                    2            ##
+Nvidia RTX 3060          2            ##
 
 CUSTOMER SALES SUMMARY:
 ---------------------------------------------
 Customer                 Total Spent    
 ---------------------------------------------
+Tanzim                   115471.00       BDT
 Anik                     288.75          BDT
+Fahim                    115.50          BDT
 Rahil                    84.00           BDT
 Maruf                    52.50           BDT
 
@@ -30,15 +34,17 @@ CURRENT INVENTORY STATUS:
 Item                Rate      Stock   Status
    ------------------------------------------------------------
 Apple               25.00     8       OK        
-Orange              30.00     10      OK        
-Mango               15.00     8       OK        
+Orange              30.00     8       OK        
+Mango               15.00     10      OK        
+Lemon               5.00      10      OK        
+Nvidia RTX 3060     60000.00  10      OK        
 ------------------------------------------------------------
 Inventory Summary:
-- Total Items: 3
-- Normal Stock: 3
+- Total Items: 5
+- Normal Stock: 5
 - Low Stock: 0
 - Out of Stock: 0
 
 ======================================================================
-Report generated on: 2025-08-14 22:22:20
+Report generated on: 2025-08-15 03:51:06
 ======================================================================
