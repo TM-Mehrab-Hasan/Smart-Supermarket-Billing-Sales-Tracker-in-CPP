@@ -251,7 +251,7 @@ Backup/
 ```
 MIT License
 
-Copyright (c) 2024 [Your Name]
+Copyright (c) 2025 T. M. Mehrab Hasan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy...
 ```
