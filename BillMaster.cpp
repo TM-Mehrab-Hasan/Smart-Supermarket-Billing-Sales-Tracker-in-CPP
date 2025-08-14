@@ -1033,7 +1033,7 @@ int main() {
         cout << "\t╚═════╝ ╚═╝╚══════╝╚══════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝ \n";
         setColor(7);
         
-        cout << "\n\t\t\t    Supermarket POS & Billing System v2.0\n";
+        cout << "\n\t\t\t    Supermarket POS & Billing System v1.0\n";
         cout << "\t\t\t    =====================================\n\n";
         
         setColor(11);
