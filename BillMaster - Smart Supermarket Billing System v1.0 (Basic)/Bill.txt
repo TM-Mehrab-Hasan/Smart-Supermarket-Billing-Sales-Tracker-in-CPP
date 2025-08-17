@@ -1,0 +1,6 @@
+# Inventory File - Format: Name|Rate|Quantity
+Apple|25.000000|8
+Orange|30.000000|8
+Mango|15.000000|10
+Lemon|5.000000|10
+Nvidia RTX 3060|60000.000000|10
