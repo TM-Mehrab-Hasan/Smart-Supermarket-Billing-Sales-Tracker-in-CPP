@@ -194,7 +194,7 @@ RECOMMENDATIONS:
 ### **Quick Setup**
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/BillMaster++.git
+git clone https://github.com/TM-Mehrab-Hasan/Smart-Supermarket-Billing-Sales-Tracker-in-CPP.git
 cd BillMaster++
 
 # 2. Compile the source code
