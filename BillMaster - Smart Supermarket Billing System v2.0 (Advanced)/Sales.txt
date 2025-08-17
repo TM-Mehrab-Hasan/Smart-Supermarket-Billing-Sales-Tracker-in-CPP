@@ -19,3 +19,5 @@ Apple|25.000000|8|2
 Orange|30.000000|8|2
 ---
 2025-08-17 14:14:04|Quick Sale Customer|299.25|Pasta (500g)(3)
+2025-08-17 15:16:01|Rahil|606.25|Maggi Noodles 2min(2),Eggs (12 pieces)(1),Tomato (1kg)(2),Cooking Oil (1L)(2),Coca Cola (500ml)(1)
+2025-08-17 15:34:04|MK|1084.53|Chocolate (Dairy Milk)(2),Rice (Basmati 1kg)(1),Bread (White)(5),Toilet Paper (4 rolls)(2),Cooking Oil (1L)(3)

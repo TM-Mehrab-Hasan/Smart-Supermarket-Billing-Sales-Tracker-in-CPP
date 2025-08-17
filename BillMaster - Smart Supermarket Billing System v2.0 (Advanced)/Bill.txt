@@ -1,17 +1,17 @@
 # Enhanced Inventory File - Format: Name|Rate|Quantity|Barcode|Category|Supplier|LowStockThreshold
-Rice (Basmati 1kg)|85.500000|150|8901030891234|Grains|ABC Foods Ltd|10
+Rice (Basmati 1kg)|85.500000|149|8901030891234|Grains|ABC Foods Ltd|10
 Milk (1 Liter)|65.000000|80|8901526201014|Dairy|Mother Dairy|15
-Bread (White)|45.000000|60|8901030891567|Bakery|Modern Bread|8
-Coca Cola (500ml)|35.000000|120|8901030891890|Beverages|Coca Cola Co|20
-Maggi Noodles 2min|25.000000|200|8901262101234|Instant Food|Nestle|25
-Eggs (12 pieces)|180.000000|40|8901030892345|Dairy|Fresh Farm|5
+Bread (White)|45.000000|55|8901030891567|Bakery|Modern Bread|8
+Coca Cola (500ml)|35.000000|119|8901030891890|Beverages|Coca Cola Co|20
+Maggi Noodles 2min|25.000000|198|8901262101234|Instant Food|Nestle|25
+Eggs (12 pieces)|180.000000|39|8901030892345|Dairy|Fresh Farm|5
 Chicken (1kg)|280.000000|30|8901030893456|Meat|Premium Meat|3
-Cooking Oil (1L)|120.000000|75|8901030894567|Oil & Ghee|Fortune|10
+Cooking Oil (1L)|120.000000|70|8901030894567|Oil & Ghee|Fortune|10
 Sugar (1kg)|65.000000|100|8901030895678|Sweeteners|Tata Consumer|12
 Tea Bags (100pcs)|150.000000|50|8901030896789|Beverages|Lipton|8
 Potato (1kg)|45.000000|200|1234567890123|Vegetables|Local Farm|15
 Onion (1kg)|55.000000|180|1234567890234|Vegetables|Local Farm|20
-Tomato (1kg)|60.000000|120|1234567890345|Vegetables|Fresh Veggie|18
+Tomato (1kg)|60.000000|118|1234567890345|Vegetables|Fresh Veggie|18
 Apple (1kg)|220.000000|80|1234567890456|Fruits|Kashmir Fruits|10
 Banana (1kg)|80.000000|150|1234567890567|Fruits|South Fruits|25
 Orange (1kg)|180.000000|90|1234567890678|Fruits|Nagpur Fruits|12
@@ -20,7 +20,7 @@ Shampoo (200ml)|180.000000|60|8901030898901|Personal Care|Pantene|8
 Toothpaste|85.000000|80|8901030899012|Personal Care|Colgate|10
 Detergent (1kg)|120.000000|70|8901030890123|Household|Surf Excel|6
 Biscuits (Parle-G)|15.000000|300|8901030890234|Snacks|Parle|30
-Chocolate (Dairy Milk)|85.000000|150|8901030890345|Confectionery|Cadbury|20
+Chocolate (Dairy Milk)|85.000000|148|8901030890345|Confectionery|Cadbury|20
 Ice Cream (500ml)|180.000000|40|8901030890456|Frozen|Amul|5
 Yogurt (200ml)|25.000000|100|8901030890567|Dairy|Amul|20
 Cheese Slice (200g)|120.000000|50|8901030890678|Dairy|Amul|8
@@ -46,7 +46,7 @@ Jam (450g)|125.000000|60|8901030892567|Spreads|Kissan|8
 Butter (500g)|220.000000|50|8901030892678|Dairy|Amul|7
 Frozen Peas (500g)|65.000000|80|8901030892789|Frozen|McCain|10
 Frozen Corn (500g)|75.000000|70|8901030892890|Frozen|McCain|8
-Toilet Paper (4 rolls)|120.000000|60|8901030892901|Household|Charmin|10
+Toilet Paper (4 rolls)|120.000000|58|8901030892901|Household|Charmin|10
 Kitchen Towel|85.000000|80|8901030893012|Household|Bounty|12
 Garbage Bags|65.000000|90|8901030893123|Household|Glad|15
 Dish Soap|95.000000|70|8901030893234|Household|Vim|8

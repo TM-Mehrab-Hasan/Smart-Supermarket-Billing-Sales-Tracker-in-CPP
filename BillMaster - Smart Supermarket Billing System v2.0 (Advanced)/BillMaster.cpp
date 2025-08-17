@@ -847,6 +847,117 @@ void customer_management_menu() {
                 pauseSystem();
                 break;
             }
+            case 4: {
+                // ADD THIS NEW CASE:
+                setColor(14);
+                cout << "Enter customer phone number: ";
+                setColor(7);
+                string phone;
+                getline(cin, phone);
+                
+                if(phone.empty()) {
+                    setColor(4);
+                    cout << "Phone number cannot be empty!\n";
+                    setColor(7);
+                    sleepMs(1500);
+                    break;
+                }
+                
+                auto customers = load_customers();
+                Customer* customer = find_customer_by_phone(customers, phone);
+                
+                if(!customer) {
+                    setColor(4);
+                    cout << "❌ Customer not found!\n";
+                    setColor(7);
+                    sleepMs(2000);
+                    break;
+                }
+                
+                // Display customer info
+                clearScreen();
+                setColor(11);
+                cout << "\n=== CUSTOMER PURCHASE HISTORY ===\n";
+                setColor(10);
+                cout << "Customer: " << customer->name << "\n";
+                cout << "Phone: " << customer->phone << "\n";
+                cout << "ID: " << customer->id << "\n";
+                cout << "Email: " << (customer->email.empty() ? "N/A" : customer->email) << "\n";
+                setColor(7);
+                
+                cout << "\n📊 Purchase Summary:\n";
+                cout << "💰 Total Spent: " << fixed << setprecision(2) << customer->total_spent << " BDT\n";
+                cout << "🏆 Loyalty Points: " << customer->loyalty_points << "\n";
+                cout << "🛒 Total Visits: " << customer->visit_count << "\n";
+                
+                // Convert last visit time to readable format
+                if(customer->last_visit > 0) {
+                    time_t last_visit = customer->last_visit;
+                    cout << "📅 Last Visit: " << ctime(&last_visit);
+                } else {
+                    cout << "📅 Last Visit: Never\n";
+                }
+                
+                // Search for customer's transactions in sales history
+                ifstream sales_file(SALES_FILE);
+                if(sales_file.is_open()) {
+                    vector<string> customer_sales;
+                    string line;
+                    
+                    while(getline(sales_file, line)) {
+                        if(line.empty() || line[0] == '#') continue;
+                        
+                        // Check if this sale belongs to the customer
+                        if(line.find("|" + customer->name + "|") != string::npos) {
+                            customer_sales.push_back(line);
+                        }
+                    }
+                    sales_file.close();
+                    
+                    if(!customer_sales.empty()) {
+                        setColor(11);
+                        cout << "\n📋 Recent Transactions:\n";
+                        cout << "┌──────────────────────┬─────────────┬─────────────────────┐\n";
+                        cout << "│ Date & Time          │ Amount (BDT)│ Items               │\n";
+                        cout << "├──────────────────────┼─────────────┼─────────────────────┤\n";
+                        setColor(7);
+                        
+                        // Show last 10 transactions
+                        int count = 0;
+                        for(auto it = customer_sales.rbegin(); it != customer_sales.rend() && count < 10; ++it, ++count) {
+                            stringstream ss(*it);
+                            string date, cust_name, amount, items;
+                            getline(ss, date, '|');
+                            getline(ss, cust_name, '|');
+                            getline(ss, amount, '|');
+                            getline(ss, items);
+                            
+                            cout << "│ " << left << setw(20) << date.substr(0,20)
+                                 << " │ " << right << setw(11) << amount
+                                 << " │ " << left << setw(19) << items.substr(0,19) << " │\n";
+                        }
+                        
+                        setColor(11);
+                        cout << "└──────────────────────┴─────────────┴─────────────────────┘\n";
+                        setColor(7);
+                        
+                        if(customer_sales.size() > 10) {
+                            cout << "\nShowing last 10 transactions (Total: " << customer_sales.size() << ")\n";
+                        }
+                    } else {
+                        setColor(14);
+                        cout << "\n📝 No purchase history found for this customer.\n";
+                        setColor(7);
+                    }
+                } else {
+                    setColor(4);
+                    cout << "\n❌ Unable to access sales history file.\n";
+                    setColor(7);
+                }
+                
+                pauseSystem();
+                break;
+            }
             case 5:
                 exit = true;
                 break;
@@ -1222,6 +1333,7 @@ void add_item_flow() {
 }
 
 // Enhanced billing with customer and payment integration
+// Enhanced billing with customer and payment integration
 void print_bill_flow() {
     clearScreen(); 
     auto inv = load_inventory();
@@ -1287,7 +1399,7 @@ void print_bill_flow() {
             cout << "\tLoyalty Points: " << customer_obj->loyalty_points << "\n";
         }
         cout << "\tCurrent Bill Total: " << fixed << setprecision(2) << total << " BDT\n\n";
-        cout << "\t1. Add Item to Bill\n\t2. Add by Barcode\n\t3. View Current Bill\n\t4. Apply Loyalty Discount\n\t5. Complete Sale\n\t6. Cancel Sale\n";
+        cout << "\t1. Add Item to Bill\n\t2. Add by Barcode\n\t3. View Current Bill\n\t4. Show Item List\n\t5. Apply Loyalty Discount\n\t6. Complete Sale\n\t7. Cancel Sale\n";
         cout << "\tEnter Choice: "; 
         setColor(7);
         
@@ -1304,7 +1416,11 @@ void print_bill_flow() {
             
             setColor(14); 
             if(choice == 1) {
-                cout << "Item name: "; 
+                cout << "Search item by:\n";
+                cout << "  • Item number (1, 2, 3...)\n";
+                cout << "  • Partial name (e.g., 'mil' for milk)\n";
+                cout << "  • Full name or category\n";
+                cout << "Enter search term: "; 
             } else {
                 cout << "Barcode: ";
             }
@@ -1319,6 +1435,117 @@ void print_bill_flow() {
                 continue;
             }
             
+            int idx = -1;
+            vector<int> matches;
+            
+            if(choice == 2) {
+                // Search by barcode
+                for(size_t i = 0; i < inv.size(); i++) {
+                    if(inv[i].barcode == input) {
+                        idx = i;
+                        break;
+                    }
+                }
+            } else {
+                // Smart search for choice 1
+                
+                // Try as item number first (if it's a number)
+                try {
+                    int item_num = stoi(input);
+                    if(item_num >= 1 && item_num <= (int)inv.size()) {
+                        idx = item_num - 1;
+                    }
+                } catch (const exception& e) {
+                    // Not a number, continue with name search
+                }
+                
+                // If not found as number, search by name (partial match)
+                if(idx == -1) {
+                    string search_term = input;
+                    transform(search_term.begin(), search_term.end(), search_term.begin(), ::tolower);
+                    
+                    for(size_t i = 0; i < inv.size(); i++) {
+                        string item_name = inv[i].name;
+                        transform(item_name.begin(), item_name.end(), item_name.begin(), ::tolower);
+                        
+                        // Also check category
+                        string category = inv[i].category;
+                        transform(category.begin(), category.end(), category.begin(), ::tolower);
+                        
+                        if(item_name.find(search_term) != string::npos || 
+                           category.find(search_term) != string::npos) {
+                            matches.push_back(i);
+                        }
+                    }
+                    
+                    // Handle search results
+                    if(matches.empty()) {
+                        setColor(4);
+                        cout << "❌ No items found for '" << input << "'\n";
+                        cout << "💡 Tip: Try partial names like 'mil' for milk, or use item numbers from the list\n";
+                        setColor(7);
+                        sleepMs(3000);
+                        continue;
+                    } else if(matches.size() == 1) {
+                        idx = matches[0];
+                    } else {
+                        // Multiple matches - show selection menu
+                        clearScreen();
+                        setColor(11);
+                        cout << "\n🔍 Multiple items found for '" << input << "':\n";
+                        cout << "┌────┬──────────────────────┬──────────┬───────┬────────────┐\n";
+                        cout << "│ No │ Item Name            │ Rate     │ Stock │ Category   │\n";
+                        cout << "├────┼──────────────────────┼──────────┼───────┼────────────┤\n";
+                        setColor(7);
+                        
+                        for(size_t i = 0; i < matches.size(); i++) {
+                            const auto& item = inv[matches[i]];
+                            cout << "│ " << right << setw(2) << (i+1)
+                                 << " │ " << left << setw(20) << item.name.substr(0,20)
+                                 << " │ " << right << setw(8) << fixed << setprecision(2) << item.rate
+                                 << " │ " << setw(5) << item.qty 
+                                 << " │ " << left << setw(10) << item.category.substr(0,10) << " │\n";
+                        }
+                        
+                        setColor(11);
+                        cout << "└────┴──────────────────────┴──────────┴───────┴────────────┘\n";
+                        setColor(14);
+                        cout << "Select item (1-" << matches.size() << ") or 0 to cancel: ";
+                        setColor(7);
+                        
+                        int selection;
+                        if(!(cin >> selection) || selection < 0 || selection > (int)matches.size()) {
+                            wait_and_flush();
+                            setColor(4);
+                            cout << "Invalid selection!\n";
+                            setColor(7);
+                            sleepMs(1500);
+                            continue;
+                        }
+                        wait_and_flush();
+                        
+                        if(selection == 0) {
+                            continue; // Cancel selection
+                        }
+                        
+                        idx = matches[selection - 1];
+                    }
+                }
+            }
+            
+            if(idx < 0) { 
+                setColor(4); 
+                cout << "Item not found!\n"; 
+                setColor(7); 
+                sleepMs(2000); 
+                continue; 
+            }
+            
+            // Show selected item
+            setColor(10);
+            cout << "✅ Selected: " << inv[idx].name << " (Rate: " << inv[idx].rate << " BDT, Stock: " << inv[idx].qty << ")\n";
+            setColor(7);
+            
             setColor(14); 
             cout << "Quantity: "; 
             setColor(7); 
@@ -1331,28 +1558,6 @@ void print_bill_flow() {
                 continue; 
             }
             wait_and_flush();
-            
-            int idx = -1;
-            if(choice == 2) {
-                // Search by barcode
-                for(size_t i = 0; i < inv.size(); i++) {
-                    if(inv[i].barcode == input) {
-                        idx = i;
-                        break;
-                    }
-                }
-            } else {
-                // Search by name
-                idx = find_item(inv, input);
-            }
-            
-            if(idx < 0) { 
-                setColor(4); 
-                cout << "Item not found!\n"; 
-                setColor(7); 
-                sleepMs(2000); 
-                continue; 
-            }
             
             if(inv[idx].qty < q) { 
                 setColor(4); 
@@ -1390,6 +1595,38 @@ void print_bill_flow() {
             pauseSystem();
             
         } else if(choice == 4) {
+            // Show quick item reference
+            clearScreen();
+            setColor(11);
+            cout << "\n📋 QUICK ITEM REFERENCE\n";
+            cout << "┌────┬──────────────────────┬──────────┬───────┬──────────────┐\n";
+            cout << "│ No │ Item Name            │ Rate     │ Stock │ Category     │\n";
+            cout << "├────┼──────────────────────┼──────────┼───────┼──────────────┤\n";
+            setColor(7);
+            
+            for(size_t i = 0; i < inv.size(); i++) {
+                const auto& item = inv[i];
+                if(item.qty > 0) { // Only show items in stock
+                    cout << "│ " << right << setw(2) << (i+1)
+                         << " │ " << left << setw(20) << item.name.substr(0,20)
+                         << " │ " << right << setw(8) << fixed << setprecision(2) << item.rate
+                         << " │ " << setw(5) << item.qty 
+                         << " │ " << left << setw(12) << item.category.substr(0,12) << " │\n";
+                }
+            }
+            
+            setColor(11);
+            cout << "└────┴──────────────────────┴──────────┴───────┴──────────────┘\n";
+            setColor(14);
+            cout << "\n💡 Quick Tips:\n";
+            cout << "• Use item numbers (1, 2, 3...) for super fast selection\n";
+            cout << "• Use partial names ('mil' for milk, 'brea' for bread)\n";
+            cout << "• Search by category name (dairy, snacks, beverages)\n";
+            cout << "• Out of stock items are hidden from this list\n";
+            setColor(7);
+            pauseSystem();
+            
+        } else if(choice == 5) {
             if(customer_obj && customer_obj->loyalty_points > 0) {
                 double max_discount = total * 0.1; // Max 10% discount
                 double points_discount = min(customer_obj->loyalty_points * 0.01, max_discount);
@@ -1418,7 +1655,7 @@ void print_bill_flow() {
                 sleepMs(1500);
             }
             
-        } else if(choice == 5) {
+        } else if(choice == 6) {
             if(sold_items.empty()) {
                 setColor(4);
                 cout << "Cannot complete sale - no items in bill!\n";
@@ -1427,7 +1664,7 @@ void print_bill_flow() {
                 continue;
             }
             close = true;
-        } else if(choice == 6) {
+        } else if(choice == 7) {
             // Cancel sale - restore inventory
             for(const auto& item : sold_items) {
                 int idx = find_item(inv, item.first.name);
@@ -1480,8 +1717,6 @@ void print_bill_flow() {
     check_low_stock(inv);
     sleepMs(3000);
 }
-
-// Add this function before main()
 
 void save_sale_record(const string& customer_name, double net_total, const vector<pair<ItemRec,int>>& items) {
     ofstream sales_file(SALES_FILE, ios::app);
@@ -1917,6 +2152,12 @@ void view_sales_history() {
             setColor(7);
             
             for(const auto& record : sales_records) {
+                // Skip item detail lines and separator lines
+                if(record.length() < 10 || record == "---") continue;
+                
+                // Check if this line starts with a date pattern (YYYY-MM-DD)
+                if(record[4] != '-' || record[7] != '-') continue;
+                
                 // Parse and display sales record
                 // Format: Date|Customer|Amount|Items
                 stringstream ss(record);
@@ -1924,6 +2165,9 @@ void view_sales_history() {
                 getline(ss, date, '|');
                 getline(ss, customer, '|');
                 getline(ss, amount, '|');
+                
+                // Skip if any required field is empty
+                if(date.empty() || customer.empty() || amount.empty()) continue;
                 
                 cout << "│ " << left << setw(20) << date.substr(0,20)
                      << " │ " << setw(14) << customer.substr(0,14)
@@ -1947,12 +2191,21 @@ void view_sales_history() {
             setColor(7);
             
             for(const auto& record : sales_records) {
+                // Skip item detail lines and separator lines
+                if(record.length() < 10 || record == "---") continue;
+                
+                // Check if this line starts with a date pattern (YYYY-MM-DD)
+                if(record[4] != '-' || record[7] != '-') continue;
+                
                 if(record.find(today) == 0) {
                     stringstream ss(record);
                     string date, customer, amount;
                     getline(ss, date, '|');
                     getline(ss, customer, '|');
                     getline(ss, amount, '|');
+                    
+                    // Skip if any required field is empty
+                    if(date.empty() || customer.empty() || amount.empty()) continue;
                     
                     cout << "🛒 " << customer << " - " << amount << " BDT at " 
                          << date.substr(11) << "\n";
@@ -1996,12 +2249,21 @@ void view_sales_history() {
             setColor(7);
             
             for(const auto& record : sales_records) {
+                // Skip item detail lines and separator lines
+                if(record.length() < 10 || record == "---") continue;
+                
+                // Check if this line starts with a date pattern (YYYY-MM-DD)
+                if(record[4] != '-' || record[7] != '-') continue;
+                
                 if(record.find(search_date) == 0) {
                     stringstream ss(record);
                     string date, customer, amount;
                     getline(ss, date, '|');
                     getline(ss, customer, '|');
                     getline(ss, amount, '|');
+                    
+                    // Skip if any required field is empty
+                    if(date.empty() || customer.empty() || amount.empty()) continue;
                     
                     cout << "🛒 " << customer << " - " << amount << " BDT at " 
                          << date.substr(11) << "\n";
@@ -2033,6 +2295,12 @@ void view_sales_history() {
             map<string, double> daily_totals;
             
             for(const auto& record : sales_records) {
+                // Skip item detail lines (they don't start with date format)
+                if(record.length() < 10 || record == "---") continue;
+                
+                // Check if this line starts with a date pattern (YYYY-MM-DD)
+                if(record[4] != '-' || record[7] != '-') continue;
+                
                 string date = record.substr(0, 10);
                 stringstream ss(record);
                 string temp_date, customer, amount;
@@ -2040,8 +2308,16 @@ void view_sales_history() {
                 getline(ss, customer, '|');
                 getline(ss, amount, '|');
                 
-                daily_counts[date]++;
-                daily_totals[date] += stod(amount);
+                // Skip if any required field is empty
+                if(temp_date.empty() || customer.empty() || amount.empty()) continue;
+                
+                try {
+                    daily_counts[date]++;
+                    daily_totals[date] += stod(amount);
+                } catch (const exception& e) {
+                    // Skip records with invalid amount format
+                    continue;
+                }
             }
             
             clearScreen();

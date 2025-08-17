@@ -1,47 +1,52 @@
 ===============================================
            DAILY BUSINESS REPORT
 ===============================================
-Date: 2025-08-17 14:14:18
-Report Generated: 2025-08-17 14:14:18
+Date: 2025-08-17 15:41:11
+Report Generated: 2025-08-17 15:41:11
 
 INVENTORY SUMMARY:
 ==================
 Total Items: 54
-Total Inventory Value: 412450.00 BDT
+Total Inventory Value: 410744.50 BDT
 Low Stock Items: 0
 Out of Stock Items: 0
 
 CUSTOMER SUMMARY:
 =================
-Total Customers: 0
-Total Customer Spending: 0.00 BDT
-Active Customers (Last 30 days): 0
+Total Customers: 2
+Total Customer Spending: 1690.78 BDT
+Active Customers (Last 30 days): 2
+
+TOP 5 CUSTOMERS BY SPENDING:
+============================
+1. MK - 1084.53 BDT (1 visits)
+2. Rahil - 606.25 BDT (1 visits)
 
 CATEGORY ANALYSIS:
 ==================
-Bakery: 1 items, Value: 2700.00 BDT
-Beverages: 7 items, Value: 49350.00 BDT
+Bakery: 1 items, Value: 2475.00 BDT
+Beverages: 7 items, Value: 49315.00 BDT
 Condiments: 1 items, Value: 6750.00 BDT
-Confectionery: 1 items, Value: 12750.00 BDT
-Dairy: 5 items, Value: 31900.00 BDT
+Confectionery: 1 items, Value: 12580.00 BDT
+Dairy: 5 items, Value: 31720.00 BDT
 Electronics: 1 items, Value: 4800.00 BDT
 Frozen: 3 items, Value: 17650.00 BDT
 Fruits: 3 items, Value: 45800.00 BDT
-Grains: 2 items, Value: 23625.00 BDT
-Household: 7 items, Value: 47250.00 BDT
-Instant Food: 1 items, Value: 5000.00 BDT
+Grains: 2 items, Value: 23539.50 BDT
+Household: 7 items, Value: 47010.00 BDT
+Instant Food: 1 items, Value: 4950.00 BDT
 Italian Food: 1 items, Value: 7125.00 BDT
 Meat: 1 items, Value: 8400.00 BDT
 Natural: 1 items, Value: 11200.00 BDT
 Nuts: 2 items, Value: 16400.00 BDT
-Oil & Ghee: 1 items, Value: 9000.00 BDT
+Oil & Ghee: 1 items, Value: 8400.00 BDT
 Personal Care: 3 items, Value: 21100.00 BDT
 Pulses: 2 items, Value: 17250.00 BDT
 Snacks: 3 items, Value: 17400.00 BDT
 Spices: 3 items, Value: 16900.00 BDT
 Spreads: 1 items, Value: 7500.00 BDT
 Sweeteners: 1 items, Value: 6500.00 BDT
-Vegetables: 3 items, Value: 26100.00 BDT
+Vegetables: 3 items, Value: 25980.00 BDT
 
 RECOMMENDATIONS:
 ================
