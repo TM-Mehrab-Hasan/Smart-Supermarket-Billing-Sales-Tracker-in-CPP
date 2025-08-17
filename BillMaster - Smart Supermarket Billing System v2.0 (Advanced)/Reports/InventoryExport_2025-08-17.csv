@@ -1,0 +1,55 @@
+Name,Barcode,Rate,Quantity,Category,Supplier,LowStockThreshold
+"Rice (Basmati 1kg)","8901030891234",85.5,150,"Grains","ABC Foods Ltd",10
+"Milk (1 Liter)","8901526201014",65,80,"Dairy","Mother Dairy",15
+"Bread (White)","8901030891567",45,60,"Bakery","Modern Bread",8
+"Coca Cola (500ml)","8901030891890",35,120,"Beverages","Coca Cola Co",20
+"Maggi Noodles 2min","8901262101234",25,200,"Instant Food","Nestle",25
+"Eggs (12 pieces)","8901030892345",180,40,"Dairy","Fresh Farm",5
+"Chicken (1kg)","8901030893456",280,30,"Meat","Premium Meat",3
+"Cooking Oil (1L)","8901030894567",120,75,"Oil & Ghee","Fortune",10
+"Sugar (1kg)","8901030895678",65,100,"Sweeteners","Tata Consumer",12
+"Tea Bags (100pcs)","8901030896789",150,50,"Beverages","Lipton",8
+"Potato (1kg)","1234567890123",45,200,"Vegetables","Local Farm",15
+"Onion (1kg)","1234567890234",55,180,"Vegetables","Local Farm",20
+"Tomato (1kg)","1234567890345",60,120,"Vegetables","Fresh Veggie",18
+"Apple (1kg)","1234567890456",220,80,"Fruits","Kashmir Fruits",10
+"Banana (1kg)","1234567890567",80,150,"Fruits","South Fruits",25
+"Orange (1kg)","1234567890678",180,90,"Fruits","Nagpur Fruits",12
+"Soap (Lux)","8901030897890",35,100,"Personal Care","Unilever",15
+"Shampoo (200ml)","8901030898901",180,60,"Personal Care","Pantene",8
+"Toothpaste","8901030899012",85,80,"Personal Care","Colgate",10
+"Detergent (1kg)","8901030890123",120,70,"Household","Surf Excel",6
+"Biscuits (Parle-G)","8901030890234",15,300,"Snacks","Parle",30
+"Chocolate (Dairy Milk)","8901030890345",85,150,"Confectionery","Cadbury",20
+"Ice Cream (500ml)","8901030890456",180,40,"Frozen","Amul",5
+"Yogurt (200ml)","8901030890567",25,100,"Dairy","Amul",20
+"Cheese Slice (200g)","8901030890678",120,50,"Dairy","Amul",8
+"Pasta (500g)","8901030890789",95,80,"Italian Food","Maggi",10
+"Ketchup (500g)","8901030890890",75,90,"Condiments","Heinz",12
+"Salt (1kg)","8901030890901",25,200,"Spices","Tata Salt",15
+"Red Chili Powder","8901030891012",45,120,"Spices","MDH",10
+"Turmeric Powder","8901030891123",65,100,"Spices","Everest",8
+"Flour (5kg)","8901030891234",180,60,"Grains","Aashirvaad",5
+"Lentils (1kg)","8901030891345",120,80,"Pulses","Toor Dal",10
+"Chickpeas (1kg)","8901030891456",85,90,"Pulses","Chana Dal",12
+"Green Tea (25 bags)","8901030891567",165,40,"Beverages","Twinings",6
+"Coffee (200g)","8901030891678",280,45,"Beverages","Nescafe",8
+"Energy Drink (250ml)","8901030891789",85,80,"Beverages","Red Bull",15
+"Mineral Water (1L)","8901030891890",25,200,"Beverages","Bisleri",30
+"Juice (1L)","8901030891901",95,70,"Beverages","Real",12
+"Cookies (200g)","8901030892012",75,100,"Snacks","Britannia",15
+"Chips (150g)","8901030892123",45,120,"Snacks","Lays",20
+"Peanuts (500g)","8901030892234",85,80,"Nuts","Fresh Nuts",10
+"Almonds (200g)","8901030892345",320,30,"Nuts","California",5
+"Honey (500g)","8901030892456",280,40,"Natural","Dabur",6
+"Jam (450g)","8901030892567",125,60,"Spreads","Kissan",8
+"Butter (500g)","8901030892678",220,50,"Dairy","Amul",7
+"Frozen Peas (500g)","8901030892789",65,80,"Frozen","McCain",10
+"Frozen Corn (500g)","8901030892890",75,70,"Frozen","McCain",8
+"Toilet Paper (4 rolls)","8901030892901",120,60,"Household","Charmin",10
+"Kitchen Towel","8901030893012",85,80,"Household","Bounty",12
+"Garbage Bags","8901030893123",65,90,"Household","Glad",15
+"Dish Soap","8901030893234",95,70,"Household","Vim",8
+"Floor Cleaner","8901030893345",145,50,"Household","Lizol",6
+"Glass Cleaner","8901030893456",85,60,"Household","Colin",8
+"Battery (AA 4pcs)","8901030893567",120,40,"Electronics","Duracell",10
