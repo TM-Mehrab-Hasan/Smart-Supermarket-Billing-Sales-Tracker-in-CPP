@@ -1,259 +1,281 @@
 # BillMaster++ 🛒
 
-**BillMaster++** is a full-featured offline **Supermarket POS and Billing System** built in C++.  
-It supports inventory management, customer billing, receipts, low-stock alerts, and daily sales reports with visual charts — all designed for Windows offline use.
+**BillMaster++** is a professional-grade **Enhanced Supermarket POS and Billing System** built in C++.  
+It features advanced inventory management, barcode scanning, customer loyalty programs, multi-payment processing, comprehensive reporting, and modern UI — designed for real-world retail operations.
 
-
-**Next-Level Supermarket POS & Billing System in C++**  
+**Enterprise-Level Supermarket POS & Billing System in C++**  
 
 ![C++](https://img.shields.io/badge/Language-C++-blue)
-![Offline](https://img.shields.io/badge/Offline-100%25-green)
+![Cross-Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Build](https://img.shields.io/badge/Build-Passing-brightgreen)
+![Version](https://img.shields.io/badge/Version-2.0%20Enhanced-orange)
 
 ---
 
-## Features
+## ✨ Enhanced Features
 
-- **Add / Update Items**
-  - Manage item name, rate, and stock quantity.
-- **Print Bills / Sell Items**
-  - Table-style receipts with proper alignment and borders.
-  - Automatic VAT (5%) and discount calculation.
-- **Inventory Display & Search**
-  - View all items or search by keyword.
-- **Low Stock Alerts**
-  - Warns when stock of any item falls below a threshold (configurable).
-- **Sales Tracking**
-  - Every transaction is saved in `Sales.txt`.
-- **Daily Report**
-  - Customer-wise sales summary.
-  - Item-wise quantity sold.
-  - Simple ASCII bar charts for sales visualization.
-  - Total revenue calculation.
-- **Automatic Receipt Generation**
-  - Receipts saved in `Receipts/` folder.
-- **Reports Folder**
-  - Daily report saved in `Reports/` folder.
+### 🏪 **Core POS Functionality**
+- **Advanced Inventory Management** with barcode support (8-13 digits)
+- **Customer Loyalty Program** with points and purchase history
+- **Multi-Payment Processing** (Cash, Card, Mobile Banking, Digital Wallet)
+- **Professional Receipt Generation** with payment method details
+- **Real-time Stock Management** with low stock alerts
+
+### 📊 **Business Intelligence & Reporting**
+- **Daily Business Reports** with comprehensive analytics
+- **Sales History Analysis** with date filtering and summaries
+- **Purchase Order Generation** for automated restocking
+- **CSV Export** for external analysis
+- **Dashboard Overview** with real-time statistics
+
+### 🔍 **Advanced Search & Management**
+- **Barcode Scanning Mode** for quick item lookup
+- **Multi-criteria Search** (Name, Category, Barcode)
+- **Category & Supplier Management**
+- **Quick Sale Mode** for fast transactions
+- **Bulk Operations** for inventory updates
+
+### 🎨 **Modern User Interface**
+- **Unicode Table Borders** for professional appearance
+- **Color-coded Status Indicators** (OK/LOW/OUT stock)
+- **Progress Bars** for operations
+- **Cross-platform Compatibility** (Windows/Linux)
+- **Enhanced Error Handling** with user-friendly messages
 
 ---
 
-## 🏗️ **Project Root Directory**
+## 🏗️ **Project Structure**
 ```
 BillMaster++/
 │
-├── 📄 Source Code Files
-│   ├── BillMaster.cpp              # Main C++ source code (your enhanced version)
-│   ├── setup_demo.bat              # Windows setup script
-│   └── README.md                   # Project documentation
+├── 📄 Source Code
+│   ├── BillMaster.cpp              # Main enhanced C++ source (2000+ lines)
+│   └── README.md                   # This documentation
 │
-├── 🔧 Compiled Files
-│   ├── BillMaster.exe              # Windows executable (after compilation)
-│   └── BillMaster                  # Linux/Mac executable (after compilation)
+├── 🔧 Executables (Generated after compilation)
+│   ├── BillMaster.exe              # Windows executable
+│   └── BillMaster                  # Linux/Mac executable
 │
-├── 💾 Data Files (Created automatically)
-│   ├── Bill.txt                    # Inventory database
-│   ├── Sales.txt                   # Sales transaction log
-│   └── README.txt                  # Auto-generated user guide
+├── 💾 Core Data Files (Auto-generated)
+│   ├── Bill.txt                    # Enhanced inventory database
+│   ├── Sales.txt                   # Sales transaction history
+│   └── customers.txt               # Customer database with loyalty points
 │
-├── 📂 Generated Folders (Created by program/script)
-│   ├── Receipts/                   # Individual customer receipts
-│   │   ├── Receipt_2024-08-14_10-30-15_John_Doe.txt
-│   │   ├── Receipt_2024-08-14_11-45-22_Walk-in_Customer.txt
-│   │   └── ...
+├── 📂 Generated Directories
+│   ├── Receipts/                   # Customer receipts with payment details
+│   │   ├── Receipt_2024-08-17_10-30-15_John_Doe.txt
+│   │   └── Receipt_2024-08-17_14-22-33_Sarah_Smith.txt
 │   │
-│   ├── Reports/                    # Daily sales reports
-│   │   ├── DailyReport_2024-08-14.txt
-│   │   ├── DailyReport_2024-08-15.txt
-│   │   └── ...
+│   ├── Reports/                    # Business reports and analytics
+│   │   ├── DailyReport_2024-08-17.txt
+│   │   ├── InventoryExport_2024-08-17.csv
+│   │   └── PurchaseOrder_2024-08-17.txt
 │   │
-│   └── Backup/                     # Backup files (optional)
-│       ├── Bill_backup_2024-08-14.txt
-│       ├── Sales_backup_2024-08-14.txt
-│       └── ...
-│
-└── 📋 Optional Files
-    ├── .gitignore                  # Git ignore file
-    ├── LICENSE.txt                 # License file
-    └── CHANGELOG.md                # Version history
+│   └── Backup/ (Optional)          # Automated backups
+│       └── [Backup files with timestamps]
 ```
 
 ---
 
-## 📄 **File Descriptions**
+## 📄 **Enhanced File Formats**
 
-### **Core Source Files**
-| File | Description | Required |
-|------|-------------|----------|
-| `BillMaster.cpp` | Main C++ source code with all POS functionality | ✅ Yes |
-| `setup_demo.bat` | Automated setup script for Windows | 🔧 Recommended |
-
-### **Data Files (Auto-generated)**
-| File | Description | Format | Sample Content |
-|------|-------------|--------|----------------|
-| `Bill.txt` | Inventory database | `Name\|Rate\|Quantity` | `Apple\|55.50\|25` |
-| `Sales.txt` | Sales transaction log | Multi-line format | Transaction records |
-| `README.txt` | Auto-generated user guide | Plain text | Usage instructions |
-
-### **Generated Directories**
-| Directory | Purpose | Contents |
-|-----------|---------|----------|
-| `Receipts/` | Customer receipts | Individual `.txt` receipt files |
-| `Reports/` | Business reports | Daily sales analysis files |
-| `Backup/` | Data backups | Backup copies of data files |
-
----
-
-## 🗂️ **Sample File Contents**
-
-### **Bill.txt (Inventory Database)**
+### **Bill.txt (Enhanced Inventory Database)**
 ```
-# Inventory File - Format: Name|Rate|Quantity
-Apple|55.50|25
-Banana|32.00|40
-Orange|48.75|30
-Milk 1L|65.00|20
-Bread|28.50|35
-Rice 1kg|85.00|50
+# Enhanced Inventory File - Format: Name|Rate|Quantity|Barcode|Category|Supplier|LowStockThreshold
+Rice (Basmati 1kg)|85.50|150|8901030891234|Grains|ABC Foods Ltd|10
+Milk (1 Liter)|65.00|80|8901526201014|Dairy|Mother Dairy|15
+Coca Cola (500ml)|35.00|120|8901030891890|Beverages|Coca Cola Co|20
+Chicken (1kg)|280.00|30|8901030893456|Meat|Premium Meat|3
+Soap (Lux)|35.00|100|8901030897890|Personal Care|Unilever|15
 ```
 
-### **Sales.txt (Transaction Log)**
+### **Sales.txt (Transaction History)**
 ```
-2024-08-14 10:30:15|John Doe|245.50
-Apple|55.50|25|2
-Milk 1L|65.00|20|1
-Bread|28.50|35|3
----
-2024-08-14 11:45:22|Walk-in Customer|120.75
-Banana|32.00|40|3
-Orange|48.75|30|1
----
+# Sales History - Format: DateTime|Customer|Amount|Items
+2024-08-17 10:30:15|John Doe|275.50|Rice(1),Milk(2),Bread(1)
+2024-08-17 14:22:33|Sarah Smith|185.75|Coca Cola(3),Chips(2),Chocolate(1)
+2024-08-17 16:45:12|Quick Sale Customer|65.00|Milk(1)
 ```
 
-### **Sample Receipt File**
+### **customers.txt (Customer Database)**
 ```
-Receipts/Receipt_2024-08-14_10-30-15_John_Doe.txt
+# Customer Database - Format: ID|Name|Phone|Email|LoyaltyPoints|TotalSpent|VisitCount|LastVisit
+CUST001|John Doe|01712345678|john@email.com|125.50|1250.75|8|1692259815
+CUST002|Sarah Smith|01798765432|sarah@email.com|89.25|892.50|5|1692345612
 ```
+
+### **Enhanced Receipt Sample**
 ```
+================================================================
                     SUPERMARKET RECEIPT
-============================================================
-Customer: John Doe
-Date: 2024-08-14 10:30:15
+================================================================
+Customer: John Doe (Phone: 01712345678)
+Loyalty Points: 125 (Earned: 12 points this purchase)
+Date: 2024-08-17 10:30:15                    Bill #: 20240817001
 
-+------------------+-------+-----+----------+
-| Item             | Rate  | Qty | Amount   |
-+------------------+-------+-----+----------+
-| Apple            | 55.50 |   2 |   111.00 |
-| Milk 1L          | 65.00 |   1 |    65.00 |
-| Bread            | 28.50 |   3 |    85.50 |
-+------------------+-------+-----+----------+
-                                 Subtotal:   261.50 BDT
-                                 VAT(5%):     13.08 BDT
-                                 Discount:     0.00 BDT
-------------------------------------------------------------
-                                NET TOTAL:   274.58 BDT
-============================================================
+┌────────────────────┬──────────┬─────┬─────────────┬──────────┐
+│ Item               │ Rate     │ Qty │ Barcode     │ Amount   │
+├────────────────────┼──────────┼─────┼─────────────┼──────────┤
+│ Rice (Basmati 1kg) │    85.50 │   1 │ 8901030891234│    85.50 │
+│ Milk (1 Liter)     │    65.00 │   2 │ 8901526201014│   130.00 │
+│ Bread (White)      │    45.00 │   1 │ 8901030891567│    45.00 │
+└────────────────────┴──────────┴─────┴─────────────┴──────────┘
+
+                                            Subtotal:   260.50 BDT
+                                            VAT (5%):    13.03 BDT
+                                            Loyalty Discount: -10.00 BDT
+                                            ─────────────────────────
+                                            NET TOTAL:   263.53 BDT
+
+PAYMENT DETAILS:
+├─ Cash:                                               200.00 BDT
+├─ Card (Visa ****1234):                                63.53 BDT
+└─ Total Paid:                                         263.53 BDT
+
+================================================================
+        Thank you for shopping with us! Visit again soon!
+             Next purchase: 15% off on items over 500 BDT
+================================================================
 ```
 
-### **Sample Daily Report**
+### **Daily Report Sample**
 ```
-Reports/DailyReport_2024-08-14.txt
-```
-```
-======================================================================
-             SUPERMARKET DAILY SALES REPORT
-                    Date: 2024-08-14
-======================================================================
+===============================================
+           DAILY BUSINESS REPORT
+===============================================
+Date: 2024-08-17 18:30:25
+Report Generated: 2024-08-17 18:30:25
 
-SALES SUMMARY:
-------------------------------
-Total Transactions: 15
-Total Revenue: 2847.50 BDT
-Average Transaction: 189.83 BDT
+INVENTORY SUMMARY:
+==================
+Total Items: 48
+Total Inventory Value: 45,750.50 BDT
+Low Stock Items: 5
+Out of Stock Items: 2
 
-TOP SELLING ITEMS:
---------------------------------------------------
-Item                     Qty Sold    Visual Chart
---------------------------------------------------
-Apple                    45           ████████████████████████████████████████████████
-Milk 1L                  32           ████████████████████████████████████
-Bread                    28           ████████████████████████████████
-Banana                   25           █████████████████████████████
-...
+CUSTOMER SUMMARY:
+=================
+Total Customers: 127
+Total Customer Spending: 127,450.75 BDT
+Active Customers (Last 30 days): 89
+
+TOP 5 CUSTOMERS BY SPENDING:
+============================
+1. John Doe - 1250.75 BDT (8 visits)
+2. Sarah Smith - 892.50 BDT (5 visits)
+3. Mike Johnson - 745.25 BDT (6 visits)
+4. Emma Wilson - 650.00 BDT (4 visits)
+5. David Brown - 580.75 BDT (7 visits)
+
+CATEGORY ANALYSIS:
+==================
+Dairy: 8 items, Value: 5,240.00 BDT
+Beverages: 12 items, Value: 8,750.50 BDT
+Grains: 6 items, Value: 4,200.00 BDT
+Personal Care: 10 items, Value: 3,850.75 BDT
+
+RECOMMENDATIONS:
+================
+- Restock 5 low stock items
+- Urgently restock 2 out of stock items
+===============================================
 ```
 
 ---
 
-## 🚀 **Setup Instructions**
+## 🚀 **Setup & Installation**
 
-### **Method 1: Using Setup Script (Recommended)**
-1. Download/create all files in a single folder
-2. Run `setup_demo.bat` (Windows)
-3. Follow the prompts
-4. Program ready to use!
+### **Prerequisites**
+- **C++ Compiler** (GCC 7.0+ or Visual Studio 2017+)
+- **C++17 Standard** support
+- **Windows 10+** or **Linux** (Ubuntu 18.04+)
 
-### **Method 2: Manual Setup**
+### **Quick Setup**
 ```bash
-# 1. Create project directory
-mkdir BillMaster++
+# 1. Clone the repository
+git clone https://github.com/yourusername/BillMaster++.git
 cd BillMaster++
 
 # 2. Compile the source code
-g++ -o BillMaster.exe BillMaster.cpp -std=c++17
+# For Windows:
+g++ -o BillMaster.exe BillMaster.cpp -static -std=c++17
 
-# 3. Create required directories
+# For Linux/Mac:
+g++ -o BillMaster BillMaster.cpp -std=c++17
+
+# 3. Run the program
+# Windows:
+./BillMaster.exe
+
+# Linux/Mac:
+./BillMaster
+```
+
+### **Features Demo Setup**
+```bash
+# Create sample data directories
 mkdir Receipts Reports Backup
 
-# 4. Run the program
-./BillMaster.exe
+# The program will auto-generate sample data on first run
+# Or manually add sample inventory items to Bill.txt
 ```
 
 ---
 
-## 📊 **File Size Estimates**
+## 🎮 **Usage Guide**
 
-| Component | Estimated Size | Notes |
-|-----------|----------------|--------|
-| Source Code | ~15-20 KB | Single C++ file |
-| Executable | ~500 KB - 2 MB | Depends on compiler/linking |
-| Sample Data | ~1-2 KB | Initial inventory |
-| Daily Reports | ~5-10 KB each | Depends on transactions |
-| Receipts | ~1-3 KB each | Individual customer receipts |
+### **Main Menu Options**
+```
+╔══════════════════════════════════════════════════════════════════╗
+║                    🏪 BILLMASTER++ POS SYSTEM                    ║
+║                        Enhanced Edition v2.0                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║  1. 📦 Inventory Management     │  7. 📊 View Sales History      ║
+║  2. 💰 Customer Billing         │  8. 👥 Customer Management     ║
+║  3. 🔍 Search Inventory         │  9. 📱 Barcode Scan Mode       ║
+║  4. 📋 Display Inventory        │ 10. 📈 Dashboard Overview       ║
+║  5. ⚡ Quick Sale              │ 11. 📄 Generate Daily Report   ║
+║  6. 🛒 Generate Purchase Order  │ 12. 💾 Export to CSV           ║
+║                                 │  0. 🚪 Exit System             ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+### **Key Workflows**
+
+#### **Adding New Inventory**
+1. Select **"1. Inventory Management"** → **"1. Add New Item"**
+2. Enter item details with barcode (8-13 digits)
+3. Set category, supplier, and low stock threshold
+4. System validates and saves to database
+
+#### **Customer Billing Process**
+1. Select **"2. Customer Billing"**
+2. Choose customer lookup method or create new
+3. Scan/search items by name or barcode
+4. Select payment method(s) - supports split payments
+5. Generate professional receipt with loyalty points
+
+#### **Quick Sale (Fast Transactions)**
+1. Select **"5. Quick Sale"**
+2. Enter item name or scan barcode
+3. Specify quantity and confirm
+4. Process payment and generate receipt
+5. Automatically records in sales history
 
 ---
 
-## 🔧 **Maintenance Files**
+## 🔧 **Advanced Features**
 
-### **.gitignore (Optional)**
-```
-# Executables
-*.exe
-*.out
-BillMaster
-pos_system
+### **Barcode Support**
+- **Validation**: 8-13 digit numeric codes
+- **Scanning Mode**: Dedicated barcode lookup interface
+- **Integration**: Works in billing, search, and quick sale
 
-# Data files (keep local)
-Sales.txt
-Bill.txt
+### **Customer Loyalty Program**
+- **Points System**: 1 point per 10 BDT spent
+- **Discounts**: Automatic loyalty discounts
+- **History Tracking**: Complete purchase history per customer
 
-# Generated folders
-Receipts/
-Reports/
-Backup/
-
-# IDE files
-*.cbp
-*.layout
-.vscode/
-```
-
-### **LICENSE.txt (Optional)**
-```
-MIT License
-
-Copyright (c) 2025 T. M. Mehrab Hasan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy...
-```
-
-This file structure provides a complete, organized, and scalable foundation for your POS system that can handle both development and production use cases.
+### **Multi-Payment Processing**
+- **Payment Types**: Cash, Card, Mobile Banking, Digital
